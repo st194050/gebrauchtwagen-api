@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>carVertical Klon</title>
+    <style>
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        background-color: #f4f7f6;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+      }
+      input {
+        width: 80%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+      button {
+        background-color: #0056b3;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #004494;
+      }
+
+      #ergebnis-box {
+        margin-top: 20px;
+        padding: 15px;
+        border-top: 2px solid #eee;
+        display: none;
+        text-align: left;
+      }
+      .error {
+        color: red;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Fahrzeughistorie prüfen</h2>
+      <p>Gib eine VIN ein, um den Report zu laden.</p>
+
+      <input type="text" id="vin-input" placeholder="z.B. WAUZZZ123456789" />
+      <br />
+      <button onclick="sucheAuto()">Report abrufen</button>
+
+      <div id="ergebnis-box"></div>
+    </div>
+
+    <script>
+      // Funktion für das Abrufen des Reports
+      async function sucheAuto() {
+        const vin = document.getElementById("vin-input").value;
+        const ergebnisBox = document.getElementById("ergebnis-box");
+
+        // Box leeren und anzeigen, dass wir laden
+        ergebnisBox.style.display = "block";
+        ergebnisBox.innerHTML = "<p>Suche in Datenbank...</p>";
+
+        if (!vin) {
+          ergebnisBox.innerHTML =
+            '<p class="error">Bitte gib eine VIN ein!</p>';
+          return;
+        }
+
+        try {
+          // URL des Backends aufrufen
+          const response = await fetch(
+            `http://127.0.0.1:8000/api/report/${vin}`,
+          );
+
+          if (!response.ok) {
+            // Wenn das Backend einen 404 Fehler wirft (Auto nicht gefunden)
+            ergebnisBox.innerHTML =
+              '<p class="error">Fahrzeug nicht gefunden. Bitte überprüfe die VIN.</p>';
+            return;
+          }
+
+          // JSON Daten auspacken
+          const data = await response.json();
+          const auto = data.daten;
+
+          // HTML für den Report
+          ergebnisBox.innerHTML = `
+                    <h3>Ergebnis für: ${auto.vin}</h3>
+                    <p><strong>Modell:</strong> ${auto.modell}</p>
+                    <p><strong>Geschätzter Wert:</strong> ${auto.preis} €</p>
+                    <p><strong>Kilometerstand:</strong> ${auto.kilometerstand} km</p>
+                    <p><strong>Unfallfrei:</strong> ${auto.unfallfrei}</p>
+                `;
+        } catch (error) {
+          // Falls server nicht läuft
+          ergebnisBox.innerHTML =
+            '<p class="error">Fehler bei der Verbindung zum Server.</p>';
+          console.error(error);
+        }
+      }
+    </script>
+  </body>
+</html>

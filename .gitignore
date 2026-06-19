@@ -1,0 +1,12 @@
+# Python Systemdateien
+__pycache__/
+
+#Virtual environment
+.venv/
+
+# Datenbanken 
+*.db
+*.sqlite3
+
+# macOS Systemdateien
+.DS_Store
