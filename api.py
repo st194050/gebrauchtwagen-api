@@ -34,6 +34,21 @@ def startseite():
 
 @app.get("/api/report/{vin}")
 def get_vehicle_report(vin: str):
+    
+    # Input validation
+    if len(vin)!= 17:
+        raise HTTPException(
+            status_code=400,
+            detail="Ungültige Eingabe: Die VIN muss genau 17 Stellen lang sein."
+        )
+    
+    # Buchstaben I, O und Q nicht zulassen
+    if any(verbotener_buchstabe in vin.upper() for verbotener_buchstabe in ["I", "O", "Q"]):
+        raise HTTPException(
+            status_code=400,
+            detail="Ungültige VIN: Die Buchstaben I, O und Q sind nicht erlaubt"   
+        )
+    
     auto_daten = hole_auto_daten(vin)
 
     # Wenn fahrzeug nicht gefunden gebe 404 aus.
