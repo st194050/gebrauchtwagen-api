@@ -1,6 +1,6 @@
-# Gebrauchtwagen-API (Portfolio Projekt)
+# Gebrauchtwagen-API
 
-Ein Full-Stack-Prototyp zur Abfrage von Gebrauchtwagen-Historien, inspiriert von Plattformen wie carVertical. Das Projekt demonstriert die nahtlose Verbindung zwischen einer Frontend-Benutzeroberfläche und einer validierenden Backend-API.
+Ein Full-Stack Prototyp zur Abfrage von Gebrauchtwagen Historien, inspiriert von Plattformen wie carVertical. Das Projekt demonstriert die nahtlose Verbindung zwischen einer Frontend-Benutzeroberfläche und einer validierenden Backend-API.
 
 ## Tech Stack
 
