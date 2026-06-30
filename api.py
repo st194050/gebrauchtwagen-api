@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import sqlite3
+import random
 
 
 
@@ -55,6 +56,13 @@ def get_vehicle_report(vin: str):
     if auto_daten is None:
         raise HTTPException(status_code=404, detail="Fahrzeug mit dieser VIN nicht gefunden")
 
+    # Immer dieselben Werte für dieselbe VIN
+    random.seed(vin)
+
+    war_taxi = random.choice(["Nein","Nein","Nein","Ja"])
+
+    anzahl_vorbesitzer = random.randint(1,5)
+
    # wenn auto gefunden dann gebe auto_daten aus in JSON Format.
     return {
         "status": "erfolgreich",
@@ -63,6 +71,8 @@ def get_vehicle_report(vin: str):
             "modell": auto_daten[1],
             "preis": auto_daten[2],
             "kilometerstand": auto_daten[3],
-            "unfallfrei": auto_daten[4]
+            "unfallfrei": auto_daten[4],
+            "fuer_taxi_benutzt": war_taxi,
+            "anzahl_vorbesitzer": anzahl_vorbesitzer
         }
     }
