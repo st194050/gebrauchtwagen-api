@@ -219,6 +219,18 @@
                         <span class="badge ${unfallKlasse}">${unfallText}</span>
                     </div>
                 </div>
+
+                <div>
+                    <h3>Fahrzeug Checks</h3>
+                    <div class="data-row">
+                        <span>Taxi/Mietwagen:</span>
+                        <strong>${auto.fuer_taxi_benutzt}</strong>
+                    </div>
+                    <div class="data-row">
+                        <span>Vorbesitzer:</span>
+                        <strong>${auto.anzahl_vorbesitzer}</strong>
+                    </div>
+                </div>
             </div>
           `;
         } catch (error) {
